@@ -4,8 +4,8 @@
 リセット：R
 
 # デモ
-[DrawLine](https://little-hoge.github.io/Exploding/)  
-[<img src="https://user-images.githubusercontent.com/3638785/92103022-591f3800-ee1a-11ea-843e-4d038fec5d44.gif" width=50%>](https://little-hoge.github.io/Exploding/)
+[DrawLine](https://little-hoge.github.io/DrawLine/)  
+[<img src="https://user-images.githubusercontent.com/3638785/92103022-591f3800-ee1a-11ea-843e-4d038fec5d44.gif" width=50%>](https://little-hoge.github.io/DrawLine/)
 
 # 開発環境
 - Windows10 64bit
