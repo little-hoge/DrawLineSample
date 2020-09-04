@@ -54,11 +54,8 @@ public class LineManager : MonoBehaviour {
             // 追加予定位置表示の初期化
             this.GhostLineInit();
 
-            // 線オブジェクトの追加
-            this.AddLineObject();
-
-            // 位置情報の更新
-            this.LinePositionUpdata();
+            // 開始位置情報の更新
+            this.LineStartPositionUpdata();
 
         }
 
@@ -71,11 +68,14 @@ public class LineManager : MonoBehaviour {
         // ボタンを離した時、
         if (Input.GetMouseButtonUp(0)) {
 
+            // 線オブジェクトの追加
+            this.AddLineObject();
+
+            // 終了位置情報の更新
+            this.LineEndPositionUpdata();
+
             // 当たり判定追加
             this.AddEdgeCollider();
-
-            // 位置情報の更新
-            this.LinePositionUpdata();
 
             // 追加予定位置表示の初期化
             this.GhostLineInit();
@@ -98,17 +98,28 @@ public class LineManager : MonoBehaviour {
     }
 
     /// <summary>
-    /// 描く線のコンポーネントリストに位置情報の更新
+    /// 描く線の開始位置情報の更新
     /// </summary>
-    private void LinePositionUpdata() {
+    private void LineStartPositionUpdata() {
+
+        // 座標の変換を行いマウス位置を取得
+        Vector3 screenPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.nearClipPlane + 1.0f);
+        startLinePos = Camera.main.ScreenToWorldPoint(screenPosition);
+
+    }
+
+    /// <summary>
+    /// 描く線の終了位置情報の更新
+    /// </summary>
+    private void LineEndPositionUpdata() {
 
         // 座標の変換を行いマウス位置を取得
         Vector3 screenPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.nearClipPlane + 1.0f);
         endLinePos = Camera.main.ScreenToWorldPoint(screenPosition);
 
         // 描く線のコンポーネントリストを更新
-        lineRendererList.Last().SetPosition(lineRendererList.Last().positionCount - 2, endLinePos);
         lineRendererList.Last().SetPosition(lineRendererList.Last().positionCount - 1, startLinePos);
+        lineRendererList.Last().SetPosition(lineRendererList.Last().positionCount - 2, endLinePos);
 
     }
 
@@ -174,9 +185,9 @@ public class LineManager : MonoBehaviour {
 
     }
     /// <summary>
-    /// 線オブジェクトの削除
+    /// 線オブジェクトの全削除
     /// </summary>
-    public void DeleteLineObject() {
+    public void DeleteAllLineObject() {
 
         for (int i = 0; i < lineRendererList.Count; i++) {
             Destroy(lineRendererList[i]);

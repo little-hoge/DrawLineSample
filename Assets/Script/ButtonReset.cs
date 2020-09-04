@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class ButtonReset : MonoBehaviour
 {
-    public GameObject m_LineObject;
-    public Transform RetryButton;
+    public GameObject lineObject;
+    public Transform circleTransform;
 
     void Update() {
 
         if (Input.GetKey(KeyCode.R)) {
-            RetryButton.position = new Vector3(0f, 4.5f, 0f);
-            m_LineObject.GetComponent<LineManager>().DeleteLineObject();
+            circleTransform.position = new Vector3(0f, 4.5f, 0f);
+            lineObject.GetComponent<LineManager>().DeleteAllLineObject();
         }
 
     }
