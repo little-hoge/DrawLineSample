@@ -109,7 +109,7 @@ public class LineManager : MonoBehaviour {
     }
 
     /// <summary>
-    /// 線の追加予定位置表示の更新
+    /// 描く線の追加予定位置表示の更新
     /// </summary>
     public void GhostLineUpdata() {
         // 座標の変換を行いマウス位置を取得
@@ -122,7 +122,7 @@ public class LineManager : MonoBehaviour {
     }
 
     /// <summary>
-    /// 描く線のコンポーネントリストに位置情報の更新
+    /// 描く線の開始位置情報の更新
     /// </summary>
     public void LineStartPositionUpdata() {
 
@@ -133,7 +133,7 @@ public class LineManager : MonoBehaviour {
     }
 
     /// <summary>
-    /// 描く線のコンポーネントリストに位置情報の更新
+    /// 描く線の終了位置情報の更新
     /// </summary>
     public void LineEndPositionUpdata() {
 
@@ -148,7 +148,7 @@ public class LineManager : MonoBehaviour {
     }
 
     /// <summary>
-    /// 線オブジェクトの追加予定位置表示の初期化
+    /// 描く線の追加予定位置表示の初期化
     /// </summary>
     public void GhostLineInit() {
         // 座標の変換を行いマウス位置を取得
@@ -162,7 +162,7 @@ public class LineManager : MonoBehaviour {
     }
 
     /// <summary>
-    /// 線オブジェクトの当たり判定追加
+    /// 描く線の当たり判定追加
     /// </summary>
     public void AddEdgeCollider() {
         Vector2[] points = new Vector2[2];
@@ -181,7 +181,7 @@ public class LineManager : MonoBehaviour {
     }
 
     /// <summary>
-    /// 線オブジェクトの非表示
+    /// 描く線の非表示
     /// </summary>
     public void DrawLineStateChange() {
 
@@ -196,7 +196,7 @@ public class LineManager : MonoBehaviour {
     }
 
     /// <summary>
-    /// 線の追加
+    /// 描く線の追加
     /// </summary>
     public void AddLine() {
 
@@ -225,7 +225,7 @@ public class LineManager : MonoBehaviour {
     }
 
     /// <summary>
-    /// 線の全削除
+    /// 描く線の全削除
     /// </summary>
     public void AllDeleteLine() {
 
@@ -246,7 +246,7 @@ public class LineManager : MonoBehaviour {
     }
 
     /// <summary>
-    /// 線のキャンセル
+    /// 描く線のキャンセル
     /// </summary>
     public void DeleteLineCancel() {
 
