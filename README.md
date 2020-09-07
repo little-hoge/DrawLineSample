@@ -15,8 +15,8 @@
 
 
 # 使い方
-1. [LineManager.unitypackage](https://github.com/little-hoge/DrawLineSample/releases/download/1.0/LineManager.unitypackage)をインポートする。  
-2.LineManagerをシーンに追加する。  
+1. [LineManager.unitypackage](https://github.com/little-hoge/DrawLineSample/releases/download/1.0/LineManager.unitypackage)をインポートする。
+1. LineManagerをシーンに追加する。  
 [<img src="https://user-images.githubusercontent.com/3638785/92345982-5a947d00-f106-11ea-814b-58e17b76e82f.gif" width=50%>](https://little-hoge.github.io/DrawLineSample/)
 
 # 参考リンク
