@@ -92,7 +92,7 @@ public class LineManager : MonoBehaviour {
         }
 
         // キャンセル状態
-        if (Input.GetMouseButtonDown(1)) {
+        if (Input.GetMouseButtonDown(1) || Input.touchCount > 1) {
             cancelFlg = true;
         }
 
