@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 
 public class LineManager : MonoBehaviour {
-    /// <summary> 描く線のコンポーネント </summary>
-    private LineRenderer lineRenderer;
+    /// <summary> 描く線の追加予定位置表示用コンポーネント </summary>
+    private LineRenderer lineGhostRenderer;
 
     /// <summary> 描く線のオブジェクトリスト </summary>
     private List<GameObject> lineObject;
@@ -30,26 +30,32 @@ public class LineManager : MonoBehaviour {
     /// <summary> 描く線の終了位置 </summary>
     private Vector3 endLinePos;
 
+    /// <summary> 線作成キャンセルフラグ </summary>
+    private bool cancelFlg;
+
     void Start() {
         lineObject = new List<GameObject>();
         lineRendererList = new List<LineRenderer>();
         lineEdgeCollider2DList = new List<EdgeCollider2D>();
 
         // コンポーネントを取得する
-        this.lineRenderer = GetComponent<LineRenderer>();
+        this.lineGhostRenderer = GetComponent<LineRenderer>();
 
         // 線の幅を決める
-        this.lineRenderer.startWidth = lineWidth;
-        this.lineRenderer.endWidth = lineWidth;
+        this.lineGhostRenderer.startWidth = lineWidth;
+        this.lineGhostRenderer.endWidth = lineWidth;
 
         // 頂点の数を決める
-        this.lineRenderer.positionCount = 2;
+        this.lineGhostRenderer.positionCount = 2;
+
+        cancelFlg = false;
     }
 
+    // Update is called once per frame
     void Update() {
 
         // ボタンが押された時に線オブジェクトの追加を行う
-        if (Input.GetMouseButtonDown(0)) {
+        if (Input.GetMouseButtonDown(0) && !cancelFlg) {
 
             // 追加予定位置表示の初期化
             this.GhostLineInit();
@@ -59,48 +65,66 @@ public class LineManager : MonoBehaviour {
 
         }
 
-        // ボタンが押されている時、線オブジェクトの追加予定位置更新
-        if (Input.GetMouseButton(0)) {
+        // ボタンが押されている時、線の追加予定位置更新
+        if (Input.GetMouseButton(0) && !cancelFlg) {
 
             this.GhostLineUpdata();
         }
 
-        // ボタンを離した時、
-        if (Input.GetMouseButtonUp(0)) {
+        // ボタンを離した時
+        if (Input.GetMouseButtonUp(0) && !cancelFlg) {
 
-            // 線オブジェクトの追加
-            this.AddLineObject();
-
-            // 終了位置情報の更新
-            this.LineEndPositionUpdata();
+            // 線の追加
+            this.AddLine();
 
             // 当たり判定追加
             this.AddEdgeCollider();
 
+            // 終了位置情報の更新
+            this.LineEndPositionUpdata();
+
             // 追加予定位置表示の初期化
             this.GhostLineInit();
+
+            // 非表示
+            this.DrawLineStateChange();
+
+        }
+
+        // キャンセル状態
+        if (Input.GetMouseButtonDown(1)) {
+            cancelFlg = true;
+        }
+
+        // キャンセルフラグが立っている時キャンセル
+        if (cancelFlg) {
+            this.DeleteLineCancel();
+        }
+
+        // キャンセル解除
+        if (Input.GetMouseButtonDown(0) && cancelFlg) {
+            cancelFlg = false;
         }
 
     }
 
     /// <summary>
-    /// 線オブジェクトの追加予定位置表示の更新
+    /// 線の追加予定位置表示の更新
     /// </summary>
-    private void GhostLineUpdata() {
+    public void GhostLineUpdata() {
         // 座標の変換を行いマウス位置を取得
         Vector3 screenPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.nearClipPlane + 1.0f);
         endLinePos = Camera.main.ScreenToWorldPoint(screenPosition);
 
         // 追加した頂点の座標を設定
-        this.lineRenderer.SetPosition(lineRenderer.positionCount - 2, endLinePos);
-
+        this.lineGhostRenderer.SetPosition(lineGhostRenderer.positionCount - 2, endLinePos);
 
     }
 
     /// <summary>
-    /// 描く線の開始位置情報の更新
+    /// 描く線のコンポーネントリストに位置情報の更新
     /// </summary>
-    private void LineStartPositionUpdata() {
+    public void LineStartPositionUpdata() {
 
         // 座標の変換を行いマウス位置を取得
         Vector3 screenPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.nearClipPlane + 1.0f);
@@ -109,9 +133,9 @@ public class LineManager : MonoBehaviour {
     }
 
     /// <summary>
-    /// 描く線の終了位置情報の更新
+    /// 描く線のコンポーネントリストに位置情報の更新
     /// </summary>
-    private void LineEndPositionUpdata() {
+    public void LineEndPositionUpdata() {
 
         // 座標の変換を行いマウス位置を取得
         Vector3 screenPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.nearClipPlane + 1.0f);
@@ -126,21 +150,21 @@ public class LineManager : MonoBehaviour {
     /// <summary>
     /// 線オブジェクトの追加予定位置表示の初期化
     /// </summary>
-    private void GhostLineInit() {
+    public void GhostLineInit() {
         // 座標の変換を行いマウス位置を取得
         Vector3 screenPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.nearClipPlane + 1.0f);
         startLinePos = Camera.main.ScreenToWorldPoint(screenPosition);
 
         // 追加した頂点の座標を設定
-        this.lineRenderer.SetPosition(lineRenderer.positionCount - 1, startLinePos);
-        this.lineRenderer.SetPosition(lineRenderer.positionCount - 2, startLinePos);
+        this.lineGhostRenderer.SetPosition(lineGhostRenderer.positionCount - 1, startLinePos);
+        this.lineGhostRenderer.SetPosition(lineGhostRenderer.positionCount - 2, startLinePos);
 
     }
 
     /// <summary>
     /// 線オブジェクトの当たり判定追加
     /// </summary>
-    private void AddEdgeCollider() {
+    public void AddEdgeCollider() {
         Vector2[] points = new Vector2[2];
 
         lineObject.Last().AddComponent<EdgeCollider2D>();
@@ -153,18 +177,33 @@ public class LineManager : MonoBehaviour {
         // 位置と範囲設定
         lineEdgeCollider2DList.Last().points = points;
         lineEdgeCollider2DList.Last().edgeRadius = this.lineWidth / 2;
+
     }
 
+    /// <summary>
+    /// 線オブジェクトの非表示
+    /// </summary>
+    public void DrawLineStateChange() {
+
+        // 半透明
+        if (lineRendererList.Count > 1) {
+            lineRendererList[lineRendererList.Count - 2].material.color -= new Color(0, 0, 0, 0.8f);
+        }
+        // 非表示
+        if (lineRendererList.Count > 2) {
+            lineObject[lineRendererList.Count - 3].SetActive(false);
+        }
+    }
 
     /// <summary>
-    /// 線オブジェクトの追加
+    /// 線の追加
     /// </summary>
-    private void AddLineObject() {
+    public void AddLine() {
 
         // 追加するオブジェクトをインスタンス
         lineObject.Add(new GameObject());
 
-        // オブジェクトにLineRendererを取り付ける
+        // オブジェクトにLineRendererを追加
         lineObject.Last().AddComponent<LineRenderer>();
 
         // 描く線のコンポーネントリストに追加する
@@ -184,10 +223,11 @@ public class LineManager : MonoBehaviour {
         lineRendererList.Last().endWidth = this.lineWidth;
 
     }
+
     /// <summary>
-    /// 線オブジェクトの全削除
+    /// 線の全削除
     /// </summary>
-    public void DeleteAllLineObject() {
+    public void AllDeleteLine() {
 
         for (int i = 0; i < lineRendererList.Count; i++) {
             Destroy(lineRendererList[i]);
@@ -204,4 +244,15 @@ public class LineManager : MonoBehaviour {
         }
         lineObject.Clear();
     }
+
+    /// <summary>
+    /// 線のキャンセル
+    /// </summary>
+    public void DeleteLineCancel() {
+
+        // 作成予定位置初期化
+        GhostLineInit();
+
+    }
+
 }

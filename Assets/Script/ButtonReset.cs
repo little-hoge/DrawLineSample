@@ -11,7 +11,7 @@ public class ButtonReset : MonoBehaviour
 
         if (Input.GetKey(KeyCode.R)) {
             circleTransform.position = new Vector3(0f, 4.5f, 0f);
-            lineObject.GetComponent<LineManager>().DeleteAllLineObject();
+            lineObject.GetComponent<LineManager>().AllDeleteLine();
         }
 
     }
