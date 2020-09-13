@@ -61,14 +61,14 @@ public class LineManager : MonoBehaviour {
             this.GhostLineInit();
 
             // 開始位置情報の更新
-            this.LineStartPositionUpdata();
+            this.LineStartPositionUpdate();
 
         }
 
         // ボタンが押されている時、線の追加予定位置更新
         if (Input.GetMouseButton(0) && !cancelFlg) {
 
-            this.GhostLineUpdata();
+            this.GhostLineUpdate();
         }
 
         // ボタンを離した時
@@ -81,7 +81,7 @@ public class LineManager : MonoBehaviour {
             this.AddEdgeCollider();
 
             // 終了位置情報の更新
-            this.LineEndPositionUpdata();
+            this.LineEndPositionUpdate();
 
             // 追加予定位置表示の初期化
             this.GhostLineInit();
@@ -111,7 +111,7 @@ public class LineManager : MonoBehaviour {
     /// <summary>
     /// 描く線の追加予定位置表示の更新
     /// </summary>
-    public void GhostLineUpdata() {
+    public void GhostLineUpdate() {
         // 座標の変換を行いマウス位置を取得
         Vector3 screenPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.nearClipPlane + 1.0f);
         endLinePos = Camera.main.ScreenToWorldPoint(screenPosition);
@@ -124,7 +124,7 @@ public class LineManager : MonoBehaviour {
     /// <summary>
     /// 描く線の開始位置情報の更新
     /// </summary>
-    public void LineStartPositionUpdata() {
+    public void LineStartPositionUpdate() {
 
         // 座標の変換を行いマウス位置を取得
         Vector3 screenPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.nearClipPlane + 1.0f);
@@ -135,7 +135,7 @@ public class LineManager : MonoBehaviour {
     /// <summary>
     /// 描く線の終了位置情報の更新
     /// </summary>
-    public void LineEndPositionUpdata() {
+    public void LineEndPositionUpdate() {
 
         // 座標の変換を行いマウス位置を取得
         Vector3 screenPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.nearClipPlane + 1.0f);
